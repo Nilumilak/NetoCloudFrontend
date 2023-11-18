@@ -2,7 +2,7 @@
     box-sizing: border-box;
     padding: 1em;
     min-height: 350px;
-    min-width: 590px;
+    min-width: 700px;
     height: calc(100vh - 16px);
     border: 0.2em solid #1677ff;
     border-radius: 1em;

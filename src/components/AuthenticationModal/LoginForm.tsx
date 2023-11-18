@@ -1,10 +1,11 @@
-import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Form, Input } from 'antd';
-import { fetchTokenRequest } from '../../redux/slices/tokenSlice';
-import { useAppDispatch } from '../../redux/hooks';
+import { LockOutlined, UserOutlined } from '@ant-design/icons'
+import { Button, Checkbox, Form, Input } from 'antd'
+
+import { useAppDispatch } from '../../redux/hooks'
+import { fetchTokenRequest } from '../../redux/slices/tokenSlice'
 
 type TErrorMessage = {
-  status: "error",
+  status: 'error'
   text: string
 } | undefined
 
@@ -13,17 +14,17 @@ type LoginFormProps = {
   onRegisterFormOpen: () => void
 }
 
-function LoginForm({ error, onRegisterFormOpen }: LoginFormProps) {
+function LoginForm ({ error, onRegisterFormOpen }: LoginFormProps): JSX.Element {
   const dispatch = useAppDispatch()
-  const errorMessage: TErrorMessage = error === "Unauthorized" ? { status: "error", text: "Please check provided Login and Password" } : undefined
+  const errorMessage: TErrorMessage = error === 'Unauthorized' ? { status: 'error', text: 'Please check provided Login and Password' } : undefined
 
-  const onFinish = (values: { username: string, password: string, remember: boolean }) => {
-    dispatch(fetchTokenRequest({
+  const onFinish = (values: { username: string, password: string, remember: boolean }): void => {
+    void dispatch(fetchTokenRequest({
       username: values.username,
       password: values.password,
       remember: values.remember
     }))
-  };
+  }
 
   return (
     <Form
@@ -43,7 +44,7 @@ function LoginForm({ error, onRegisterFormOpen }: LoginFormProps) {
       <Form.Item
         name="password"
         rules={[
-          { required: true, message: 'Please input your Password!' },
+          { required: true, message: 'Please input your Password!' }
         ]}
         validateStatus={errorMessage?.status}
         help={errorMessage?.text}
@@ -67,7 +68,7 @@ function LoginForm({ error, onRegisterFormOpen }: LoginFormProps) {
         <Button type='link' onClick={onRegisterFormOpen}>Or register now!</Button>
       </Form.Item>
     </Form>
-  );
+  )
 }
 
-export default LoginForm;
+export default LoginForm

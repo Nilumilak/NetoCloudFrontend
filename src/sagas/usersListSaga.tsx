@@ -1,17 +1,17 @@
-import { takeLatest, put, call, select } from 'redux-saga/effects'
-import type { PutEffect, CallEffect, ForkEffect, SelectEffect } from 'redux-saga/effects'
-import { getUsersListRequest, getUsersListFailure, getUsersListSuccess } from '../redux/slices/usersListSlice'
-import { type RootState } from '../redux/store'
-import { usersListSchema } from '../validators/userValidator'
-import { fetchUsersList } from '../api/userApi'
-import { handleGetTokenRefreshRequestSaga } from './tokenSaga'
+import type { CallEffect, ForkEffect, PutEffect, SelectEffect } from 'redux-saga/effects'
+import { call, put, select, takeLatest } from 'redux-saga/effects'
 
+import { fetchUsersList } from '../api/userApi'
+import { getUsersListFailure, getUsersListRequest, getUsersListSuccess } from '../redux/slices/usersListSlice'
+import type { RootState } from '../redux/store'
+import { usersListSchema } from '../validators/userValidator'
+import { handleGetTokenRefreshRequestSaga } from './tokenSaga'
 
 function * handleGetUsersListRequestSaga (): Generator<PutEffect | CallEffect | SelectEffect> {
   yield call(handleGetTokenRefreshRequestSaga)
   const accessToken = yield select((state: RootState) => state.token.accessToken)
-  if (typeof(accessToken) !== 'string') {
-    console.error("Access token is missed")
+  if (typeof (accessToken) !== 'string') {
+    console.error('Access token is missed')
     return
   }
   try {
@@ -24,6 +24,7 @@ function * handleGetUsersListRequestSaga (): Generator<PutEffect | CallEffect | 
     yield put(getUsersListSuccess({ usersList: validatedUsersList.data }))
   } catch (error) {
     if (error instanceof Error) {
+      console.log(error)
       yield put(getUsersListFailure({ error: error.message }))
     }
   }

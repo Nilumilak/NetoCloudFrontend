@@ -1,15 +1,15 @@
-import { takeLatest, put, call, select } from 'redux-saga/effects'
-import type { PutEffect, CallEffect, ForkEffect, SelectEffect } from 'redux-saga/effects'
-import { getUserRequest, getUserFailure, getUserSuccess, updateUserRequest, updateUserFailure, updateUserSuccess } from '../redux/slices/userSlice'
-import { type RootState } from '../redux/store'
-import { userSchema } from '../validators/userValidator';
-import { fetchUser } from '../api/userApi';
-import { tokenStateSchema } from '../validators/tokenValidator';
+import type { CallEffect, ForkEffect, PutEffect, SelectEffect } from 'redux-saga/effects'
+import { call, put, select, takeLatest } from 'redux-saga/effects'
+
+import { fetchUser } from '../api/userApi'
+import type { TUpdateUserRequestPayload } from '../redux/slices/userSlice'
+import { getUserFailure, getUserRequest, getUserSuccess, updateUserFailure, updateUserRequest, updateUserSuccess } from '../redux/slices/userSlice'
+import type { RootState } from '../redux/store'
+import { tokenStateSchema } from '../validators/tokenValidator'
+import { userSchema } from '../validators/userValidator'
 import { handleGetTokenRefreshRequestSaga } from './tokenSaga'
-import type { TUpdateUserRequestPayload } from '../redux/slices/userSlice';
 
-
-function* handleGetUserRequestSaga(): Generator<PutEffect | CallEffect | SelectEffect> {
+function * handleGetUserRequestSaga (): Generator<PutEffect | CallEffect | SelectEffect> {
   const tokenState = yield select((state: RootState) => state.token)
   const validatedTokenState = tokenStateSchema.safeParse(tokenState)
   if (!validatedTokenState.success) {
@@ -36,11 +36,11 @@ function* handleGetUserRequestSaga(): Generator<PutEffect | CallEffect | SelectE
 }
 
 type THandleUpdateUserRequestSaga = { type: string } & { payload: TUpdateUserRequestPayload }
-function* handleUpdateUserRequestSaga({ payload }: THandleUpdateUserRequestSaga): Generator<PutEffect | CallEffect | SelectEffect> {
+function * handleUpdateUserRequestSaga ({ payload }: THandleUpdateUserRequestSaga): Generator<PutEffect | CallEffect | SelectEffect> {
   yield call(handleGetTokenRefreshRequestSaga)
   const accessToken = yield select((state: RootState) => state.token.accessToken)
   if (typeof (accessToken) !== 'string') {
-    console.error("Access token is missed")
+    console.error('Access token is missed')
     return
   }
   try {
@@ -59,11 +59,11 @@ function* handleUpdateUserRequestSaga({ payload }: THandleUpdateUserRequestSaga)
   }
 }
 
-function* watchGetUserRequestSaga(): Generator<ForkEffect> {
+function * watchGetUserRequestSaga (): Generator<ForkEffect> {
   yield takeLatest(getUserRequest.type, handleGetUserRequestSaga)
 }
 
-function* watchUpdateUserRequestSaga(): Generator<ForkEffect> {
+function * watchUpdateUserRequestSaga (): Generator<ForkEffect> {
   yield takeLatest(updateUserRequest.type, handleUpdateUserRequestSaga)
 }
 

@@ -1,77 +1,78 @@
-import { Button, Checkbox, Form, Input } from 'antd';
-import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { createUserRequest } from '../../redux/slices/userSlice';
-import { fetchTokenRequest } from '../../redux/slices/tokenSlice';
-import { usernameErrorValidator, emailErrorValidator, passwordErrorValidator } from '../../validators/errorValidator';
+import { Button, Checkbox, Form, Input } from 'antd'
+
+import { useAppDispatch, useAppSelector } from '../../redux/hooks'
+import { fetchTokenRequest } from '../../redux/slices/tokenSlice'
+import { createUserRequest } from '../../redux/slices/userSlice'
+import { emailErrorValidator, passwordErrorValidator, usernameErrorValidator } from '../../validators/errorValidator'
 
 const formItemLayout = {
-    labelCol: {
-        xs: { span: 24 },
-        sm: { span: 8 },
-    },
-    wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 16 },
-    },
-};
+  labelCol: {
+    xs: { span: 24 },
+    sm: { span: 8 }
+  },
+  wrapperCol: {
+    xs: { span: 24 },
+    sm: { span: 16 }
+  }
+}
 
 const tailFormItemLayout = {
-    wrapperCol: {
-        xs: {
-            span: 24,
-            offset: 0,
-        },
-        sm: {
-            span: 16,
-            offset: 8,
-        },
+  wrapperCol: {
+    xs: {
+      span: 24,
+      offset: 0
     },
-};
+    sm: {
+      span: 16,
+      offset: 8
+    }
+  }
+}
 
 type RegisterFormProps = {
-    onRegisterFormClose: () => void
+  onRegisterFormClose: () => void
 }
 
 type TFormValues = {
-    username: string
-    fullname: string
-    email: string
-    password: string
-    confirm: string
+  username: string
+  fullname: string
+  email: string
+  password: string
+  confirm: string
 }
 
-function RegisterForm({ onRegisterFormClose }: RegisterFormProps) {
-    const dispatch = useAppDispatch()
-    const userStateError = useAppSelector(state => state.user.error)
-    let errorObject
+function RegisterForm ({ onRegisterFormClose }: RegisterFormProps): JSX.Element {
+  const dispatch = useAppDispatch()
+  const userStateError = useAppSelector(state => state.user.error)
+  let errorObject
 
-    try {
-        if (userStateError) {
-            errorObject = JSON.parse(userStateError)
-        }
-    } catch (error) {
-        console.error(error)
+  try {
+    if (userStateError) {
+      errorObject = JSON.parse(userStateError)
     }
+  } catch (error) {
+    console.error(error)
+  }
 
-    const onFinish = (values: TFormValues) => {
-        new Promise((resolve) => {
-            resolve(dispatch(createUserRequest({
-                username: values.username,
-                fullName: values.fullname,
-                email: values.email,
-                password: values.password,
-                repeatPassword: values.confirm,
-            })))
-        }).then(() => {
-            dispatch(fetchTokenRequest({
-                username: values.username,
-                password: values.password,
-                remember: true
-            }))
-        })
-    };
+  const onFinish = (values: TFormValues): void => {
+    void new Promise((resolve) => {
+      resolve(dispatch(createUserRequest({
+        username: values.username,
+        fullName: values.fullname,
+        email: values.email,
+        password: values.password,
+        repeatPassword: values.confirm
+      })))
+    }).then(() => {
+      void dispatch(fetchTokenRequest({
+        username: values.username,
+        password: values.password,
+        remember: true
+      }))
+    })
+  }
 
-    return (
+  return (
         <Form
             {...formItemLayout}
             name="register"
@@ -83,8 +84,8 @@ function RegisterForm({ onRegisterFormClose }: RegisterFormProps) {
             <Form.Item
                 name="username"
                 label="Username"
-                validateStatus={usernameErrorValidator(errorObject) && "error" || undefined}
-                help={usernameErrorValidator(errorObject) && errorObject.username || undefined}
+                validateStatus={(usernameErrorValidator(errorObject) && 'error') || undefined}
+                help={(usernameErrorValidator(errorObject) && errorObject.username) || undefined}
                 rules={[{ required: true, message: 'Please input your username!' }]}
             >
                 <Input />
@@ -101,17 +102,17 @@ function RegisterForm({ onRegisterFormClose }: RegisterFormProps) {
             <Form.Item
                 name="email"
                 label="E-mail"
-                validateStatus={emailErrorValidator(errorObject) && "error" || undefined}
-                help={emailErrorValidator(errorObject) && errorObject.email || undefined}
+                validateStatus={(emailErrorValidator(errorObject) && 'error') || undefined}
+                help={(emailErrorValidator(errorObject) && errorObject.email) || undefined}
                 rules={[
-                    {
-                        type: 'email',
-                        message: 'The input is not valid E-mail!',
-                    },
-                    {
-                        required: true,
-                        message: 'Please input your E-mail!',
-                    },
+                  {
+                    type: 'email',
+                    message: 'The input is not valid E-mail!'
+                  },
+                  {
+                    required: true,
+                    message: 'Please input your E-mail!'
+                  }
                 ]}
             >
                 <Input />
@@ -120,12 +121,12 @@ function RegisterForm({ onRegisterFormClose }: RegisterFormProps) {
             <Form.Item
                 name="password"
                 label="Password"
-                validateStatus={passwordErrorValidator(errorObject) && "error" || undefined}
+                validateStatus={(passwordErrorValidator(errorObject) && 'error') || undefined}
                 rules={[
-                    {
-                        required: true,
-                        message: 'Please input your password!',
-                    },
+                  {
+                    required: true,
+                    message: 'Please input your password!'
+                  }
                 ]}
             >
                 <Input.Password />
@@ -134,22 +135,22 @@ function RegisterForm({ onRegisterFormClose }: RegisterFormProps) {
             <Form.Item
                 name="confirm"
                 label="Confirm Password"
-                validateStatus={passwordErrorValidator(errorObject) && "error" || undefined}
-                help={passwordErrorValidator(errorObject) && errorObject.password || undefined}
+                validateStatus={(passwordErrorValidator(errorObject) && 'error') || undefined}
+                help={(passwordErrorValidator(errorObject) && errorObject.password) || undefined}
                 dependencies={['password']}
                 rules={[
-                    {
-                        required: true,
-                        message: 'Please confirm your password!',
-                    },
-                    ({ getFieldValue }) => ({
-                        validator(_, value) {
-                            if (!value || getFieldValue('password') === value) {
-                                return Promise.resolve();
-                            }
-                            return Promise.reject(new Error('The new password that you entered do not match!'));
-                        },
-                    }),
+                  {
+                    required: true,
+                    message: 'Please confirm your password!'
+                  },
+                  ({ getFieldValue }) => ({
+                    async validator (_, value) {
+                      if (!value || getFieldValue('password') === value) {
+                        await Promise.resolve(); return
+                      }
+                      return await Promise.reject(new Error('The new password that you entered do not match!'))
+                    }
+                  })
                 ]}
             >
                 <Input.Password />
@@ -159,10 +160,9 @@ function RegisterForm({ onRegisterFormClose }: RegisterFormProps) {
                 name="agreement"
                 valuePropName="checked"
                 rules={[
-                    {
-                        validator: (_, value) =>
-                            value ? Promise.resolve() : Promise.reject(new Error('Should accept agreement')),
-                    },
+                  {
+                    validator: async (_, value) => { value ? await Promise.resolve() : await Promise.reject(new Error('Should accept agreement')) }
+                  }
                 ]}
                 {...tailFormItemLayout}
             >
@@ -171,7 +171,7 @@ function RegisterForm({ onRegisterFormClose }: RegisterFormProps) {
                 </Checkbox>
             </Form.Item>
             <Form.Item {...tailFormItemLayout}>
-                <Button style={{ marginRight: "1em" }} onClick={onRegisterFormClose} >
+                <Button style={{ marginRight: '1em' }} onClick={onRegisterFormClose} >
                     Back
                 </Button>
                 <Button type="primary" htmlType="submit">
@@ -179,7 +179,7 @@ function RegisterForm({ onRegisterFormClose }: RegisterFormProps) {
                 </Button>
             </Form.Item>
         </Form>
-    );
+  )
 }
 
-export default RegisterForm;
+export default RegisterForm

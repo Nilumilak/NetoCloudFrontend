@@ -1,58 +1,57 @@
-import { useState } from 'react';
-import { Button, Modal } from 'antd';
-import UploadForm from './UploadForm';
-import type { RcFile } from 'antd/es/upload/interface';
-import { useAppSelector, useAppDispatch } from '../../redux/hooks';
-import { useSearchParams, useParams } from 'react-router-dom';
-import { fetchFileRequest } from '../../redux/slices/fileSlice';
-import { postFile } from '../../api/fileApi';
-import { useLocation } from 'react-router-dom';
+import { Button, Modal } from 'antd'
+import type { RcFile } from 'antd/es/upload/interface'
+import { useState } from 'react'
+import { useLocation, useParams, useSearchParams } from 'react-router-dom'
 
-function UploadModal() {
-    const fileState = useAppSelector(state => state.file)
-    const dispatch = useAppDispatch()
-    const [searchParams] = useSearchParams()
-    const params = useParams<{ id: string }>()
-    const [open, setOpen] = useState(false);
-    const [path, setPath] = useState("");
-    const [file, setFile] = useState<RcFile | null>(null)
-    const [name, setName] = useState('')
-    const [note, setNote] = useState('')
-    const location = useLocation()
+import { postFile } from '../../api/fileApi'
+import { useAppDispatch, useAppSelector } from '../../redux/hooks'
+import { fetchFileRequest } from '../../redux/slices/fileSlice'
+import UploadForm from './UploadForm'
 
+function UploadModal (): JSX.Element {
+  const dispatch = useAppDispatch()
+  const fileState = useAppSelector(state => state.file)
+  const [searchParams] = useSearchParams()
+  const params = useParams<{ id: string }>()
+  const [open, setOpen] = useState(false)
+  const [path, setPath] = useState('')
+  const [file, setFile] = useState<RcFile | null>(null)
+  const [name, setName] = useState('')
+  const [note, setNote] = useState('')
+  const location = useLocation()
 
-    const showModal = () => {
-        setOpen(true);
-    };
+  const showModal = (): void => {
+    setOpen(true)
+  }
 
-    const handleOk = async () => {
-        if (!file) {
-            return
-        }
-        dispatch(fetchFileRequest({
-            userId: params.id,
-            fetchFunction: (token) => postFile(file, token, name, (searchParams.get("path") || "") + path, note),
-            callback: () => {
-                setOpen(false);
-                setFile(null)
-                setName('')
-                setPath('')
-                setNote('')
-            }
-        }))
-    };
-
-    const handleCancel = () => {
-        setOpen(false);
+  const handleOk = (): void => {
+    if (!file) {
+      return
+    }
+    dispatch(fetchFileRequest({
+      userId: params.id,
+      fetchFunction: async (token) => { await postFile(file, token, name, (searchParams.get('path') ?? '') + path, note) },
+      callback: () => {
+        setOpen(false)
         setFile(null)
         setName('')
         setPath('')
         setNote('')
-    };
+      }
+    }))
+  }
 
-    return (
+  const handleCancel = (): void => {
+    setOpen(false)
+    setFile(null)
+    setName('')
+    setPath('')
+    setNote('')
+  }
+
+  return (
         <>
-            <Button disabled={location.pathname === "/admin" || location.pathname.startsWith('/admin/storages/')} type="primary" onClick={showModal}>
+            <Button disabled={location.pathname === '/admin' || location.pathname.startsWith('/admin/storages/')} type="primary" onClick={showModal}>
                 Upload File
             </Button>
             <Modal
@@ -66,7 +65,7 @@ function UploadModal() {
                     </Button>,
                     <Button key="submit" type="primary" loading={fileState.loading} onClick={handleOk}>
                         Upload
-                    </Button>,
+                    </Button>
                 ]}
             >
                 <UploadForm
@@ -80,7 +79,7 @@ function UploadModal() {
                 />
             </Modal>
         </>
-    );
-};
+  )
+}
 
-export default UploadModal;
+export default UploadModal
