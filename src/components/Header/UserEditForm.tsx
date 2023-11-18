@@ -10,7 +10,6 @@ function UserEditForm(props: TEditFormStates & TEditFormSetters) {
     try {
         if (userStateError) {
             errorObject = JSON.parse(userStateError)
-            console.log(errorObject)
         }
     } catch (error) {
         console.error(error)

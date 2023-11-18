@@ -6,9 +6,9 @@ import { useAppSelector, useAppDispatch } from '../../redux/hooks';
 import { useSearchParams } from 'react-router-dom';
 import { fetchFileRequest } from '../../redux/slices/fileSlice';
 import { postFile } from '../../api/fileApi';
+import { useLocation } from 'react-router-dom';
 
-
-const UploadModal: React.FC = () => {
+function UploadModal() {
     const fileState = useAppSelector(state => state.file)
     const dispatch = useAppDispatch()
     const [searchParams] = useSearchParams()
@@ -17,6 +17,7 @@ const UploadModal: React.FC = () => {
     const [file, setFile] = useState<RcFile | null>(null)
     const [name, setName] = useState('')
     const [note, setNote] = useState('')
+    const location = useLocation()
 
 
     const showModal = () => {
@@ -49,7 +50,7 @@ const UploadModal: React.FC = () => {
 
     return (
         <>
-            <Button type="primary" onClick={showModal}>
+            <Button disabled={location.pathname === "/admin"} type="primary" onClick={showModal}>
                 Upload File
             </Button>
             <Modal

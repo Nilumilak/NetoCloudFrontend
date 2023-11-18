@@ -7,7 +7,6 @@ const userSchema = z.object({
     email: z.string().email(),
     storage_id: z.number(),
     is_staff: z.boolean().optional(),
-    is_active: z.boolean().optional()
 })
 
 const userStateSchema = z.object({
@@ -16,4 +15,12 @@ const userStateSchema = z.object({
     error: z.string().nullable(),
 })
 
-export { userSchema, userStateSchema }
+const usersListSchema = z.array(userSchema)
+
+const usersListStateSchema = z.object({
+    usersList: usersListSchema.nullable(),
+    loading: z.boolean(),
+    error: z.string().nullable(),
+})
+
+export { userSchema, userStateSchema, usersListSchema, usersListStateSchema }

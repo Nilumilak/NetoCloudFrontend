@@ -3,6 +3,7 @@ import userSlice from './slices/userSlice'
 import storageSlice from './slices/storageSlice'
 import tokenSlice from './slices/tokenSlice'
 import fileSlice from './slices/fileSlice'
+import usersListSlice from './slices/usersListSlice'
 import createSagaMiddleware from 'redux-saga'
 import rootSaga from '../sagas/rootSaga'
 
@@ -14,6 +15,7 @@ const store = configureStore({
     storage: storageSlice,
     token: tokenSlice,
     file: fileSlice,
+    usersList: usersListSlice,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware({serializableCheck: false}).concat(sagaMiddleware)
 })

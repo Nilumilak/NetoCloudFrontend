@@ -1,11 +1,12 @@
-import { Modal, Button, Popover, Flex } from 'antd';
+import { Modal, Button } from 'antd';
 import UserEditForm from './UserEditForm';
 import { useAppSelector, useAppDispatch } from '../../redux/hooks';
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import useUserEditForm from './hooks';
 import { updateUserRequest, clearUserErrors } from '../../redux/slices/userSlice';
 import { updateUser, deleteUser } from '../../api/userApi';
 import { clearTokenData } from '../../redux/slices/tokenSlice';
+import PopoverWrapper from '../PopoverWrapper/PopoverWrapper';
 
 type UserModalProps = {
     open: boolean
@@ -17,7 +18,6 @@ function UserModal({ open, onClose }: UserModalProps) {
     const accessToken = useAppSelector(state => state.token.accessToken)
     const dispatch = useAppDispatch()
     const { states, setters } = useUserEditForm()
-    const [confirmOpen, setConfirmOpen] = useState<boolean>(false)
 
     useEffect(() => {
         const user = userState.user
@@ -72,43 +72,31 @@ function UserModal({ open, onClose }: UserModalProps) {
             onCancel={handleCancel}
             title="Edit Profile"
             footer={[
-                <Popover
-                    content={
-                        <Flex style={{ gap: "1em", justifyContent: "flex-end" }}>
-                            <Button key="confirmNo" onClick={() => setConfirmOpen(false)} >
-                                No
-                            </Button>
-                            <Button key="confirmYes" type='primary' onClick={() => {
-                                const user = userState.user
-                                if (user && accessToken) {
-                                    setConfirmOpen(false)
-                                    setTimeout(() => {
-                                        deleteUser(user.id, accessToken)
-                                        localStorage.clear()
-                                        handleCancel()
-                                        dispatch(clearTokenData())
-                                    }, 500)
-                                }
-                            }} danger>
-                                Yes
-                            </Button>
-                        </Flex>
-                    }
-                    title="Are you sure you want to delete the account?"
-                    trigger="click"
-                    open={confirmOpen}
-                    onOpenChange={setConfirmOpen}
-                >
-                    <Button key="delete" type='primary' onClick={() => setConfirmOpen(true)} danger>
-                        Delete Account
-                    </Button>
-                </Popover>,
                 <Button key="back" onClick={handleCancel}>
                     Cancel
                 </Button>,
                 <Button key="submit" type="primary" onClick={handleOk}>
                     Update
                 </Button>,
+                <div key="delete" style={{ width: "9em" }}>
+                    <PopoverWrapper
+                        key="popover"
+                        message="Are you sure you want to delete the account?"
+                        onConfirmHandler={async () => {
+                            const user = userState.user
+                            if (user && accessToken) {
+                                await deleteUser(user.id, accessToken)
+                                localStorage.clear()
+                                handleCancel()
+                                dispatch(clearTokenData())
+                            }
+                        }}
+                    >
+                        <Button type='primary' danger>
+                            Delete Account
+                        </Button>
+                    </PopoverWrapper>
+                </div>,
             ]}
         >
             <UserEditForm

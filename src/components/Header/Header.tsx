@@ -13,7 +13,6 @@ function Header() {
     const location = useLocation()
     const dispatch = useAppDispatch()
     const [userEdit, setUserEdit] = useState(false)
-    console.log(location.pathname)
 
     const items: MenuProps['items'] = [
         {
@@ -47,7 +46,7 @@ function Header() {
             key: '5',
             danger: true,
             label: (
-                <span>Logout</span>
+                <Link to={"/"}>Logout</Link>
             ),
             onClick: () => {
                 localStorage.clear()
@@ -61,15 +60,17 @@ function Header() {
             <UserModal open={userEdit} onClose={() => setUserEdit(false)} />
             <UploadModal />
             <img src="/NetoCloudLogo.png" alt="NetoCloud" style={{ height: '3em' }} />
-            {location.pathname === "/admin"
-                ? <Button type='default' danger><Link to="/">My Storage</Link></Button>
-                : <Button type='default' danger><Link to="admin">Admin Panel</Link></Button>}
-            <Dropdown menu={{ items }} placement="bottomLeft" arrow>
-                <Flex align='center' justify='space-between' gap="1em">
-                    {userState.user?.is_staff && <Badge text="Admin" color='red' style={{ top: '-0.1em' }} />}
+            {userState.user?.is_staff
+                ? location.pathname === "/admin"
+                    ? <Button type='default' danger><Link to="/">My Storage</Link></Button>
+                    : <Button type='default' danger><Link to="admin">Admin Panel</Link></Button>
+                : null}
+            <Flex align='center' justify='space-between' gap="1em">
+                <Dropdown menu={{ items }} placement="bottomLeft" arrow>
                     <Avatar style={{ backgroundColor: '#7265e6', cursor: 'pointer' }} icon={!userState.user?.username && <UserOutlined />} size="large">{userState.user?.username[0]}</Avatar>
-                </Flex>
-            </Dropdown>
+                </Dropdown>
+                {userState.user?.is_staff && <Badge text="Admin" color='red' status='processing' />}
+            </Flex>
         </Flex>
     )
 }

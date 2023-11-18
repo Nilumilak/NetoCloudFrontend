@@ -1,5 +1,5 @@
-import { userSchema } from "../validators/userValidator"
-import type { TUser } from "../types"
+import { userSchema, usersListSchema } from "../validators/userValidator"
+import type { TUser, TUsersList } from "../types"
 import type { TEditFormStates } from "../components/Header/hooks"
 
 async function createUser(username: string, fullName: string, email: string, password: string, repeatPassword: string): Promise<TUser> {
@@ -90,4 +90,43 @@ async function deleteUser(userId: number, token: string): Promise<void> {
     }
 }
 
-export { fetchUser, updateUser, createUser, deleteUser }
+async function fetchUsersList(token: string): Promise<TUsersList> {
+    const response = await fetch(`${import.meta.env.VITE_SERVIER_URL}users/`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        },
+    })
+    if (!response.ok) {
+        throw new Error(response.statusText)
+    }
+    const data = await response.json()
+    const validatedUsersList = usersListSchema.safeParse(data)
+    if (!validatedUsersList.success) {
+        throw new Error(validatedUsersList.error.toString())
+    }
+    return validatedUsersList.data
+}
+
+async function updateUserAdminStatus(userId: number, status: string, token: string): Promise<TUser> {
+    const formData = new FormData()
+    formData.append("is_staff", status)
+    const response = await fetch(`${import.meta.env.VITE_SERVIER_URL}users/update/${userId}/`, {
+        method: 'PATCH',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        },
+        body: formData
+    })
+    if (!response.ok) {
+        throw new Error(JSON.stringify(await response.json()))
+    }
+    const data = await response.json()
+    const validatedUser = userSchema.safeParse(data)
+    if (!validatedUser.success) {
+        throw new Error(validatedUser.error.toString())
+    }
+    return validatedUser.data
+}
+
+export { fetchUser, updateUser, createUser, deleteUser, fetchUsersList, updateUserAdminStatus }

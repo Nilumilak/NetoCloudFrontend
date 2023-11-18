@@ -3,6 +3,7 @@ import { watchGetUserRequestSaga, watchUpdateUserRequestSaga } from './userSaga'
 import { watchGetStorageRequestSaga } from './storageSaga'
 import { watchGetTokenRefreshRequestSaga, watchClearTokenData } from './tokenSaga'
 import { watchPostFileRequestSaga } from './fileSaga'
+import { watchGetUsersListRequestSaga } from './usersListSaga'
 import type { ForkEffect } from 'redux-saga/effects'
 
 function * rootSaga (): Generator<ForkEffect> {
@@ -12,6 +13,7 @@ function * rootSaga (): Generator<ForkEffect> {
   yield spawn(watchGetStorageRequestSaga)
   yield spawn(watchPostFileRequestSaga)
   yield spawn(watchClearTokenData)
+  yield spawn(watchGetUsersListRequestSaga)
 }
 
 export default rootSaga
