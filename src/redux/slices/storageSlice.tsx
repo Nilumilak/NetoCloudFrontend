@@ -8,11 +8,13 @@ const initialState: TStorageState = {
     error: null
 }
 
+type TGetStorageRequestPayload = { userId?: string }
+
 const storageSlice = createSlice({
     name: 'storage',
     initialState,
     reducers: {
-        getStorageRequest: (state) => {
+        getStorageRequest: (state, action: PayloadAction<TGetStorageRequestPayload>) => {
             state.loading = true
             state.error = null
         },
@@ -34,3 +36,4 @@ const storageSlice = createSlice({
 
 export const { getStorageFailure, getStorageRequest, getStorageSuccess, clearStorageData } = storageSlice.actions
 export default storageSlice.reducer
+export type { TGetStorageRequestPayload }

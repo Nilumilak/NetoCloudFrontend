@@ -14,8 +14,12 @@ const router = createBrowserRouter([
         },
         {
           path: "admin",
-          element: <AdminPanel />
-        }
+          element: <AdminPanel />,
+        },
+        {
+          path: 'admin/storages/:id',
+          element: <Main />,
+        },
     ]
   }
 ])

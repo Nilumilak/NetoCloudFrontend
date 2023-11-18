@@ -6,6 +6,7 @@ import { fetchFileRequest } from '../../redux/slices/fileSlice';
 import { deleteFile } from '../../api/fileApi';
 import { useAppDispatch } from '../../redux/hooks';
 import { sizeConverter } from '../StorageStats/StorageStats';
+import { useParams } from 'react-router-dom';
 const { Text } = Typography
 
 type FileProps = {
@@ -16,6 +17,7 @@ type FileProps = {
 
 function File({ file, onModalOpen, onSetFileClicked }: FileProps) {
     const dispatch = useAppDispatch()
+    const params = useParams<{ id: string }>()
     const items: MenuProps['items'] = [
         {
             key: '1',
@@ -64,6 +66,7 @@ function File({ file, onModalOpen, onSetFileClicked }: FileProps) {
             ),
             danger: true,
             onClick: () => dispatch(fetchFileRequest({
+                userId: params.id,
                 fetchFunction: (token) => deleteFile(file.pk, token),
                 callback: () => { },
             }))

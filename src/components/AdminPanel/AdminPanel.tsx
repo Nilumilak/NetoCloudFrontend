@@ -4,6 +4,7 @@ import { useEffect } from 'react'
 import { getUsersListRequest } from '../../redux/slices/usersListSlice';
 import PopoverWrapper from '../PopoverWrapper/PopoverWrapper';
 import { deleteUser, updateUserAdminStatus } from '../../api/userApi';
+import { Link } from 'react-router-dom';
 
 const { Text } = Typography
 
@@ -47,7 +48,7 @@ function AdminPanel() {
                 <Text>Account is admin: {String(user.is_staff)}</Text>
               </div>
               <div style={{ marginTop: "1em" }}>
-                <Button type='primary'>Show Storage</Button>
+                <Link to={`storages/${user.id}`}><Button type='primary'>Show Storage</Button></Link>
                 <PopoverWrapper
                   message='Are you sure?'
                   onConfirmHandler={async () => {

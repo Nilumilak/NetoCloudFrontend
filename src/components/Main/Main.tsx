@@ -6,20 +6,21 @@ import { useEffect } from 'react'
 import { getStorageRequest } from '../../redux/slices/storageSlice';
 import StorageStats from '../StorageStats/StorageStats';
 import Content from '../Content/Content';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useParams } from 'react-router-dom';
 
 
 function Main() {
     const userState = useAppSelector(state => state.user)
     const storageState = useAppSelector(state => state.storage)
+    const params = useParams<{ id: string }>()
     const [searchParams, setSearchParams] = useSearchParams()
     const dispatch = useAppDispatch()
 
     useEffect(() => {
         if (userState.user) {
-            dispatch(getStorageRequest())
+            dispatch(getStorageRequest({userId: params.id}))
         }
-    }, [userState.user, dispatch])
+    }, [userState, dispatch, params.id])
 
 
     return (

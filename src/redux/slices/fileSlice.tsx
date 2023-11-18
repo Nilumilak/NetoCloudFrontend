@@ -3,6 +3,7 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import { TFileState } from '../../types'
 
 type TFetchFileRequestPayload = {
+    userId?: string
     fetchFunction: (token: string) => void,
     callback: () => void
 }

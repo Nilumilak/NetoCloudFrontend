@@ -6,8 +6,8 @@ import { getStorageRequest } from '../redux/slices/storageSlice'
 import type { TFetchFileRequestPayload } from '../redux/slices/fileSlice'
 import { handleGetTokenRefreshRequestSaga } from './tokenSaga'
 
-type THandlePostFileRequestSaga = { type: string } & {payload: TFetchFileRequestPayload}
-function* handlePostFileRequestSaga({ payload }: THandlePostFileRequestSaga): Generator<PutEffect | CallEffect | SelectEffect> {
+type THandleFetchFileRequestSaga = { type: string } & {payload: TFetchFileRequestPayload}
+function* handleFetchFileRequestSaga({ payload }: THandleFetchFileRequestSaga): Generator<PutEffect | CallEffect | SelectEffect> {
     yield call(handleGetTokenRefreshRequestSaga)
     const accessToken = yield select((state: RootState) => state.token.accessToken)
     if (typeof (accessToken) !== 'string') {
@@ -17,7 +17,7 @@ function* handlePostFileRequestSaga({ payload }: THandlePostFileRequestSaga): Ge
     try {
         yield call(payload.fetchFunction, accessToken)
         yield put(fetchFileSuccess())
-        yield put(getStorageRequest())
+        yield put(getStorageRequest({userId: payload.userId}))
         payload.callback()
     } catch (error) {
         if (error instanceof Error) {
@@ -27,7 +27,7 @@ function* handlePostFileRequestSaga({ payload }: THandlePostFileRequestSaga): Ge
 }
 
 function* watchPostFileRequestSaga(): Generator<ForkEffect> {
-    yield takeLatest(fetchFileRequest.type, handlePostFileRequestSaga)
+    yield takeLatest(fetchFileRequest.type, handleFetchFileRequestSaga)
 }
 
 export { watchPostFileRequestSaga }

@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Button, Modal } from 'antd';
 import UploadForm from './UploadForm';
 import type { RcFile } from 'antd/es/upload/interface';
 import { useAppSelector, useAppDispatch } from '../../redux/hooks';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useParams } from 'react-router-dom';
 import { fetchFileRequest } from '../../redux/slices/fileSlice';
 import { postFile } from '../../api/fileApi';
 import { useLocation } from 'react-router-dom';
@@ -12,6 +12,7 @@ function UploadModal() {
     const fileState = useAppSelector(state => state.file)
     const dispatch = useAppDispatch()
     const [searchParams] = useSearchParams()
+    const params = useParams<{ id: string }>()
     const [open, setOpen] = useState(false);
     const [path, setPath] = useState("");
     const [file, setFile] = useState<RcFile | null>(null)
@@ -29,6 +30,7 @@ function UploadModal() {
             return
         }
         dispatch(fetchFileRequest({
+            userId: params.id,
             fetchFunction: (token) => postFile(file, token, name, (searchParams.get("path") || "") + path, note),
             callback: () => {
                 setOpen(false);
@@ -50,7 +52,7 @@ function UploadModal() {
 
     return (
         <>
-            <Button disabled={location.pathname === "/admin"} type="primary" onClick={showModal}>
+            <Button disabled={location.pathname === "/admin" || location.pathname.startsWith('/admin/storages/')} type="primary" onClick={showModal}>
                 Upload File
             </Button>
             <Modal

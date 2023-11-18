@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { updateFile } from '../../api/fileApi';
 import { useAppDispatch } from '../../redux/hooks';
 import { fetchFileRequest } from '../../redux/slices/fileSlice';
+import { useParams } from 'react-router-dom';
 import type { TFile } from '../../types';
 
 type FileModalProps = {
@@ -16,6 +17,7 @@ function FileModal({ file, open, onClose }: FileModalProps) {
     const dispatch = useAppDispatch()
     const [inputName, setInputName] = useState<string>("")
     const [inputNote, setInputNote] = useState<string>("")
+    const params = useParams<{ id: string }>()
 
     useEffect(() => {
         setInputName(file.name)
@@ -28,6 +30,7 @@ function FileModal({ file, open, onClose }: FileModalProps) {
             return
         }
         dispatch(fetchFileRequest({
+            userId: params.id,
             fetchFunction: (token) => updateFile(file.pk, token, inputName !== file.name ? inputName : null, inputNote),
             callback: () => {
                 onClose()

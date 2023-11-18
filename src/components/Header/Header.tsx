@@ -62,8 +62,10 @@ function Header() {
             <img src="/NetoCloudLogo.png" alt="NetoCloud" style={{ height: '3em' }} />
             {userState.user?.is_staff
                 ? location.pathname === "/admin"
-                    ? <Button type='default' danger><Link to="/">My Storage</Link></Button>
-                    : <Button type='default' danger><Link to="admin">Admin Panel</Link></Button>
+                    ? <Link to="/"><Button danger>My Storage</Button></Link>
+                    : location.pathname.startsWith('/admin/storages/')
+                        ? <><Link to="/"><Button danger>My Storage</Button></Link><Link to="admin"><Button danger>Admin Panel</Button></Link></>
+                        : <Link to="admin"><Button danger>Admin Panel</Button></Link>
                 : null}
             <Flex align='center' justify='space-between' gap="1em">
                 <Dropdown menu={{ items }} placement="bottomLeft" arrow>
