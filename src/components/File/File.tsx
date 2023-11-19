@@ -35,17 +35,23 @@ function File ({ file, onModalOpen, onSetFileClicked }: FileProps): JSX.Element 
     {
       key: '3',
       label: (
-                <span>Last Download: {file.last_download ? new Date(file.last_download).toLocaleDateString() : 'Never'}</span>
+                <span>Created: {new Date(file.created_at).toLocaleDateString()}</span>
       )
     },
     {
       key: '4',
       label: (
-                <><Text>Link: </Text><Text ellipsis copyable>{import.meta.env.VITE_SERVIER_BASE_URL + file.url_path}</Text></>
+                <span>Last Download: {file.last_download ? new Date(file.last_download).toLocaleDateString() : 'Never'}</span>
       )
     },
     {
       key: '5',
+      label: (
+                <><Text>Link: </Text><Text ellipsis copyable>{import.meta.env.VITE_SERVIER_BASE_URL + file.url_path}</Text></>
+      )
+    },
+    {
+      key: '6',
       label: (
                 <span>Edit <EditTwoTone /></span>
       ),
@@ -55,13 +61,13 @@ function File ({ file, onModalOpen, onSetFileClicked }: FileProps): JSX.Element 
       }
     },
     {
-      key: '6',
+      key: '7',
       label: (
                 <a href={`${import.meta.env.VITE_SERVIER_BASE_URL}/download${file.url_path}`} download>Download File</a>
       )
     },
     {
-      key: '7',
+      key: '8',
       label: (
                 <span>Delete</span>
       ),
