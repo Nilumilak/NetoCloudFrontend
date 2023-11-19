@@ -9,17 +9,17 @@ import Content from '../Content/Content'
 import StorageStats from '../StorageStats/StorageStats'
 
 function Main (): JSX.Element {
-  const userState = useAppSelector(state => state.user)
+  const user = useAppSelector(state => state.user.user)
   const storageState = useAppSelector(state => state.storage)
   const params = useParams<{ id: string }>()
   const [searchParams, setSearchParams] = useSearchParams()
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    if (userState.user) {
+    if (user) {
       dispatch(getStorageRequest({ userId: params.id }))
     }
-  }, [userState, dispatch, params.id])
+  }, [user, dispatch, params.id])
 
   return (
     <>

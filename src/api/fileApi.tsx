@@ -4,7 +4,6 @@ import type { TFile } from '../types'
 import { fileSchema } from '../validators/fileValidator'
 
 async function postFile (file: RcFile, token: string, name?: string, path?: string, note?: string): Promise<TFile> {
-  console.log('1')
   const formData = new FormData()
   formData.append('file_data', file)
   formData.append('name', name ?? file.name)
@@ -23,7 +22,6 @@ async function postFile (file: RcFile, token: string, name?: string, path?: stri
     throw new Error(error.error)
   }
   const data = await response.json()
-  console.log(data)
   const validatedFile = fileSchema.safeParse(data)
   if (!validatedFile.success) {
     throw new Error(validatedFile.error.toString())

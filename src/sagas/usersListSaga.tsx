@@ -24,7 +24,6 @@ function * handleGetUsersListRequestSaga (): Generator<PutEffect | CallEffect | 
     yield put(getUsersListSuccess({ usersList: validatedUsersList.data }))
   } catch (error) {
     if (error instanceof Error) {
-      console.log(error)
       yield put(getUsersListFailure({ error: error.message }))
     }
   }

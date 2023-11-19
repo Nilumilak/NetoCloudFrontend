@@ -16,10 +16,8 @@ function * handleFetchFileRequestSaga ({ payload }: THandleFetchFileRequestSaga)
     return
   }
   try {
-    console.log('saga1')
     yield call(payload.fetchFunction, accessToken)
     yield put(fetchFileSuccess())
-    console.log('saga2')
     yield put(getStorageRequest({ userId: payload.userId }))
     payload.callback()
   } catch (error) {
