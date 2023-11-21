@@ -18,6 +18,7 @@ const fileSlice = createSlice({
   name: 'file',
   initialState,
   reducers: {
+    // @ts-expect-error action payload is used in handleFetchFileRequestSaga
     fetchFileRequest: (state, action: PayloadAction<TFetchFileRequestPayload>) => {
       state.loading = true
       state.error = null

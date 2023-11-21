@@ -15,6 +15,7 @@ const storageSlice = createSlice({
   name: 'storage',
   initialState,
   reducers: {
+    // @ts-expect-error action payload is used in handleGetStorageRequestSaga
     getStorageRequest: (state, action: PayloadAction<TGetStorageRequestPayload>) => {
       state.loading = true
       state.error = null

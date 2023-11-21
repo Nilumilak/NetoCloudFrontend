@@ -17,6 +17,10 @@ type LoginFormProps = {
   onNoteChange: (name: string) => void
 }
 
+function isRcFile (data: unknown): data is RcFile {
+  return data instanceof File
+}
+
 function UploadForm ({ name, path, note, onFileChange, onNameChange, onPathChange, onNoteChange }: LoginFormProps): JSX.Element {
   const fileError = useAppSelector(state => state.file.error)
   const pathRegExp = new RegExp('(?:^[^.\\\\]+/)+$')
@@ -27,8 +31,10 @@ function UploadForm ({ name, path, note, onFileChange, onNameChange, onPathChang
       authorization: 'authorization-text'
     },
     customRequest (file) {
-      onFileChange(file.file)
-      onNameChange(file.file.name)
+      if (isRcFile(file.file)) {
+        onFileChange(file.file)
+        onNameChange(file.file.name)
+      }
     }
   }
 

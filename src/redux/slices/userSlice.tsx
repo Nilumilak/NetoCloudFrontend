@@ -46,6 +46,7 @@ const userSlice = createSlice({
       state.loading = false
       state.error = null
     },
+    // @ts-expect-error action payload is used in handleUpdateUserRequestSaga
     updateUserRequest: (state, action: PayloadAction<TUpdateUserRequestPayload>) => {
       state.error = null
     },
