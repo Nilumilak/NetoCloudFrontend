@@ -10,7 +10,7 @@ async function createUser (username: string, fullName: string, email: string, pa
   formData.append('password', password)
   formData.append('repeat_password', repeatPassword)
 
-  const response = await fetch(`${import.meta.env.VITE_SERVIER_URL}users/`, {
+  const response = await fetch(`${import.meta.env.VITE_SERVER_URL}users/`, {
     method: 'POST',
     body: formData
   })
@@ -26,7 +26,7 @@ async function createUser (username: string, fullName: string, email: string, pa
 }
 
 async function fetchUser (userId: number, token: string): Promise<TUser> {
-  const response = await fetch(`${import.meta.env.VITE_SERVIER_URL}users/${userId}/`, {
+  const response = await fetch(`${import.meta.env.VITE_SERVER_URL}users/${userId}/`, {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${token}`
@@ -60,7 +60,7 @@ async function updateUser (userId: number, token: string, states: TEditFormState
     formData.append('repeat_password', states.repeatPassword)
   }
 
-  const response = await fetch(`${import.meta.env.VITE_SERVIER_URL}users/update/${userId}/`, {
+  const response = await fetch(`${import.meta.env.VITE_SERVER_URL}users/update/${userId}/`, {
     method: 'PATCH',
     headers: {
       Authorization: `Bearer ${token}`
@@ -79,7 +79,7 @@ async function updateUser (userId: number, token: string, states: TEditFormState
 }
 
 async function deleteUser (userId: number, token: string): Promise<void> {
-  const response = await fetch(`${import.meta.env.VITE_SERVIER_URL}users/delete/${userId}/`, {
+  const response = await fetch(`${import.meta.env.VITE_SERVER_URL}users/delete/${userId}/`, {
     method: 'DELETE',
     headers: {
       Authorization: `Bearer ${token}`
@@ -91,7 +91,7 @@ async function deleteUser (userId: number, token: string): Promise<void> {
 }
 
 async function fetchUsersList (token: string): Promise<TUsersList> {
-  const response = await fetch(`${import.meta.env.VITE_SERVIER_URL}users/`, {
+  const response = await fetch(`${import.meta.env.VITE_SERVER_URL}users/`, {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${token}`
@@ -111,7 +111,7 @@ async function fetchUsersList (token: string): Promise<TUsersList> {
 async function updateUserAdminStatus (userId: number, status: string, token: string): Promise<TUser> {
   const formData = new FormData()
   formData.append('is_staff', status)
-  const response = await fetch(`${import.meta.env.VITE_SERVIER_URL}users/update/${userId}/`, {
+  const response = await fetch(`${import.meta.env.VITE_SERVER_URL}users/update/${userId}/`, {
     method: 'PATCH',
     headers: {
       Authorization: `Bearer ${token}`

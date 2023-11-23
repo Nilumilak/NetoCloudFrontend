@@ -28,3 +28,15 @@ jobs:
 
     - name: Build
       run: npm run build
+      env:
+        VITE_SERVER_BASE_URL: ${{ secrets.VITE_SERVER_BASE_URL }}
+        VITE_SERVER_URL: ${{ secrets.VITE_SERVER_URL }}
+
+    - name: Deploy
+      uses: garygrossgarten/github-action-scp@release
+      with:
+        local: dist
+        remote: /usr/share/nginx/html
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USER }}
+        password: ${{ secrets.SSH_PASSWORD }}

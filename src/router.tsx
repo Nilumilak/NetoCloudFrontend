@@ -7,7 +7,7 @@ import RootElement from './components/RootElement/RootElement'
 
 const router = createBrowserRouter([
   {
-    path: `${import.meta.env.VITE_BASE_PATH}/`,
+    path: '/',
     element: <RootElement />,
     children: [
       {

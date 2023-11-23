@@ -2,7 +2,7 @@ import type { TStorage } from '../types'
 import { storageSchema } from '../validators/storageValidator'
 
 async function fetchStorage (storageId: number, token: string): Promise<TStorage> {
-  const response = await fetch(`${import.meta.env.VITE_SERVIER_URL}storages/${storageId}/`, {
+  const response = await fetch(`${import.meta.env.VITE_SERVER_URL}storages/${storageId}/`, {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${token}`

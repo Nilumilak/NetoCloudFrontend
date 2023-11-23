@@ -9,7 +9,7 @@ async function postFile (file: RcFile, token: string, name?: string, path?: stri
   formData.append('name', name ?? file.name)
   formData.append('path', path ?? '')
   formData.append('note', note ?? '')
-  const response = await fetch(`${import.meta.env.VITE_SERVIER_URL}files/`, {
+  const response = await fetch(`${import.meta.env.VITE_SERVER_URL}files/`, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${token}`
@@ -30,7 +30,7 @@ async function postFile (file: RcFile, token: string, name?: string, path?: stri
 }
 
 async function deleteFile (id: number, token: string): Promise<void> {
-  const response = await fetch(`${import.meta.env.VITE_SERVIER_URL}files/delete/${id}/`, {
+  const response = await fetch(`${import.meta.env.VITE_SERVER_URL}files/delete/${id}/`, {
     method: 'DELETE',
     headers: {
       Authorization: `Bearer ${token}`
@@ -47,7 +47,7 @@ async function updateFile (id: number, token: string, name: string | null, note:
     formData.append('name', name)
   }
   formData.append('note', note)
-  const response = await fetch(`${import.meta.env.VITE_SERVIER_URL}files/update/${id}/`, {
+  const response = await fetch(`${import.meta.env.VITE_SERVER_URL}files/update/${id}/`, {
     method: 'PATCH',
     headers: {
       Authorization: `Bearer ${token}`

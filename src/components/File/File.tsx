@@ -47,7 +47,7 @@ function File ({ file, onModalOpen, onSetFileClicked }: FileProps): JSX.Element 
     {
       key: '5',
       label: (
-                <><Text>Link: </Text><Text ellipsis copyable>{import.meta.env.VITE_SERVIER_BASE_URL + file.url_path}</Text></>
+                <><Text>Link: </Text><Text ellipsis copyable>{import.meta.env.VITE_SERVER_BASE_URL + file.url_path}</Text></>
       )
     },
     {
@@ -63,7 +63,7 @@ function File ({ file, onModalOpen, onSetFileClicked }: FileProps): JSX.Element 
     {
       key: '7',
       label: (
-                <a href={`${import.meta.env.VITE_SERVIER_BASE_URL}/download${file.url_path}`} download>Download File</a>
+                <a href={`${import.meta.env.VITE_SERVER_BASE_URL}/download${file.url_path}`} download>Download File</a>
       )
     },
     {

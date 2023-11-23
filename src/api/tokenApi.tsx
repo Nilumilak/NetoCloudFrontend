@@ -7,7 +7,7 @@ async function fetchToken (username: string, password: string, remember: boolean
     username,
     password
   }
-  const response = await fetch(`${import.meta.env.VITE_SERVIER_URL}token/`, {
+  const response = await fetch(`${import.meta.env.VITE_SERVER_URL}token/`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -41,7 +41,7 @@ async function fetchRefreshToken (refresh: string): Promise<{ access: string, ex
   const body = {
     refresh
   }
-  const response = await fetch(`${import.meta.env.VITE_SERVIER_URL}token/refresh/`, {
+  const response = await fetch(`${import.meta.env.VITE_SERVER_URL}token/refresh/`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'

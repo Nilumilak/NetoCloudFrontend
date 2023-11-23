@@ -49,7 +49,7 @@ function AdminPanel (): JSX.Element {
                 <Text>Account is admin: {String(user.is_staff)}</Text>
               </div>
               <div style={{ marginTop: '1em' }}>
-                <Link to={`storages/${user.id}`}><Button type='primary'>Show Storage</Button></Link>
+                <Link to={`storages/${user.id}/`}><Button type='primary'>Show Storage</Button></Link>
                 <PopoverWrapper
                   message='Are you sure?'
                   onConfirmHandler={() => {
