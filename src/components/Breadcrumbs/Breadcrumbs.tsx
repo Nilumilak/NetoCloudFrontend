@@ -16,7 +16,7 @@ function Breadcrumbs ({ currentPath, onPathChange }: BreadcrumbsProps): JSX.Elem
           title: <HomeOutlined onClick={() => { onPathChange('') }} />
         },
         ...pathList.map((path, index) => ({
-          title: <a onClick={() => { onPathChange(pathList.splice(0, index + 1).join('/') + '/') }}>{path}</a>
+          title: <a onClick={() => { path && onPathChange(pathList.splice(0, index + 1).join('/') + '/') }}>{path}</a>
         }))
       ]}
     />

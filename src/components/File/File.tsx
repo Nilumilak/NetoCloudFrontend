@@ -1,6 +1,7 @@
 import { EditTwoTone, FileOutlined } from '@ant-design/icons'
 import type { MenuProps } from 'antd'
 import { Dropdown, Flex, Typography } from 'antd'
+import { useState } from 'react'
 import { useParams } from 'react-router-dom'
 
 import { deleteFile } from '../../api/fileApi'
@@ -19,41 +20,42 @@ type FileProps = {
 function File ({ file, onModalOpen, onSetFileClicked }: FileProps): JSX.Element {
   const dispatch = useAppDispatch()
   const params = useParams<{ id: string }>()
+  const [lastDownload, setLastDownload] = useState(file.last_download ? new Date(file.last_download).toLocaleDateString() : 'Never')
   const items: MenuProps['items'] = [
     {
       key: '1',
       label: (
-                <p style={{ width: '15em' }}>Note: {file.note}</p>
+        <p style={{ width: '15em' }}>Note: {file.note}</p>
       )
     },
     {
       key: '2',
       label: (
-                <span>Size: {sizeConverter(file.size)}</span>
+        <span>Size: {sizeConverter(file.size)}</span>
       )
     },
     {
       key: '3',
       label: (
-                <span>Created: {new Date(file.created_at).toLocaleDateString()}</span>
+        <span>Created: {new Date(file.created_at).toLocaleDateString()}</span>
       )
     },
     {
       key: '4',
       label: (
-                <span>Last Download: {file.last_download ? new Date(file.last_download).toLocaleDateString() : 'Never'}</span>
+        <span>Last Download: {lastDownload}</span>
       )
     },
     {
       key: '5',
       label: (
-                <><Text>Link: </Text><Text ellipsis copyable>{import.meta.env.VITE_SERVER_BASE_URL + file.url_path}</Text></>
+        <><Text>Link: </Text><Text ellipsis copyable>{import.meta.env.VITE_SERVER_BASE_URL + file.url_path}</Text></>
       )
     },
     {
       key: '6',
       label: (
-                <span>Edit <EditTwoTone /></span>
+        <span>Edit <EditTwoTone /></span>
       ),
       onClick: () => {
         onModalOpen()
@@ -63,13 +65,18 @@ function File ({ file, onModalOpen, onSetFileClicked }: FileProps): JSX.Element 
     {
       key: '7',
       label: (
-                <a href={`${import.meta.env.VITE_SERVER_BASE_URL}/download${file.url_path}`} download>Download File</a>
+        <a
+          href={`${import.meta.env.VITE_SERVER_BASE_URL}/download${file.url_path}`}
+          onClick={() => { setLastDownload(new Date().toLocaleDateString()) }}
+          download>
+          Download File
+        </a>
       )
     },
     {
       key: '8',
       label: (
-                <span>Delete</span>
+        <span>Delete</span>
       ),
       danger: true,
       onClick: () => dispatch(fetchFileRequest({
@@ -81,14 +88,14 @@ function File ({ file, onModalOpen, onSetFileClicked }: FileProps): JSX.Element 
   ]
 
   return (
-        <>
-            <Dropdown menu={{ items }} placement="bottomLeft" arrow>
-                <Flex vertical align='center' style={{ cursor: 'pointer' }} >
-                    <FileOutlined style={{ fontSize: '5em', color: '#1677ff ' }} />
-                    <Text>{file.name}</Text>
-                </Flex>
-            </Dropdown>
-        </>
+    <>
+      <Dropdown menu={{ items }} placement="bottomLeft" arrow>
+        <Flex vertical align='center' style={{ cursor: 'pointer' }} >
+          <FileOutlined style={{ fontSize: '5em', color: '#1677ff ' }} />
+          <Text>{file.name}</Text>
+        </Flex>
+      </Dropdown>
+    </>
   )
 }
 

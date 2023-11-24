@@ -54,8 +54,8 @@ function UploadForm ({ name, path, note, onFileChange, onNameChange, onPathChang
             </Form.Item>
             <Form.Item
                 label="Path"
-                validateStatus={(path !== '' && !pathRegExp.test(path) && 'error') || undefined}
-                help={(path !== '' && !pathRegExp.test(path) && "Incorrect path format. Forbidden symbols: '.', '\\'. Example: 'home/folder/path/'.") || undefined}
+                validateStatus={(((path !== '' && !pathRegExp.test(path)) || path.includes('//')) && 'error') || undefined}
+                help={(((path !== '' && !pathRegExp.test(path)) || path.includes('//')) && "Incorrect path format. Forbidden symbols: '.', '\\'. Example: 'home/folder/path/'.") || undefined}
                 rules={[
                   { pattern: pathRegExp, message: "Incorrect path format. Forbidden symbols: '.', '\\'. Example: 'home/folder/path/'." }
                 ]}
