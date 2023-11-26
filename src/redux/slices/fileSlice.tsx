@@ -30,10 +30,14 @@ const fileSlice = createSlice({
     fetchFileSuccess: (state) => {
       state.loading = false
       state.error = null
+    },
+    clearFileState: (state) => {
+      state.loading = false
+      state.error = null
     }
   }
 })
 
-export const { fetchFileFailure, fetchFileRequest, fetchFileSuccess } = fileSlice.actions
+export const { fetchFileFailure, fetchFileRequest, fetchFileSuccess, clearFileState } = fileSlice.actions
 export default fileSlice.reducer
 export type { TFetchFileRequestPayload }

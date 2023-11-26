@@ -5,7 +5,7 @@ import { useLocation, useParams, useSearchParams } from 'react-router-dom'
 
 import { postFile } from '../../api/fileApi'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
-import { fetchFileRequest } from '../../redux/slices/fileSlice'
+import { clearFileState, fetchFileRequest } from '../../redux/slices/fileSlice'
 import UploadForm from './UploadForm'
 
 function UploadModal (): JSX.Element {
@@ -42,6 +42,7 @@ function UploadModal (): JSX.Element {
   }
 
   const handleCancel = (): void => {
+    dispatch(clearFileState())
     setOpen(false)
     setFile(null)
     setName('')
@@ -51,7 +52,7 @@ function UploadModal (): JSX.Element {
 
   return (
         <>
-            <Button disabled={location.pathname === '/admin' || location.pathname.startsWith('/admin/storages/')} type="primary" onClick={showModal}>
+            <Button disabled={location.pathname.includes('/admin') || location.pathname.startsWith('/admin/storages/')} type="primary" onClick={showModal}>
                 Upload File
             </Button>
             <Modal

@@ -7,7 +7,6 @@ import type { TEditFormSetters, TEditFormStates } from './hooks'
 function UserEditForm (props: TEditFormStates & TEditFormSetters): JSX.Element {
   const userStateError = useAppSelector(state => state.user.error)
   let errorObject
-  console.log(props)
 
   try {
     if (userStateError) {
