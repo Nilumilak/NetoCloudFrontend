@@ -4,10 +4,18 @@
 # NetoCloud
 ## Description
 Cloud storage where you can store your files, download and use their links to put in other 
-services.
+services. The design is made using the antd library.
 
 Backend - https://github.com/Nilumilak/NetoCloudBackend<br />
 Frontend - https://github.com/Nilumilak/NetoCloudFrontend
+
+## Toolset
+- React
+- Redux, Redux Saga
+- Ant Design
+- Zod
+- Vite
+- Eslint
 
 ## Build & Deployment
 - Configure .env file
